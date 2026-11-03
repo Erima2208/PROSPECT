@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6366f1">
+  <title>ProspectIA</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <header>
+    <div class="brand">
+      <span class="logo">🤖</span>
+      <div>
+        <h1>Prospect<span>IA</span></h1>
+        <p class="subtitle">Agent IA de prospection — 100% local</p>
+      </div>
+    </div>
+
+    <div class="config-bar">
+      <input type="password" id="apiKey" placeholder="🔑 Clé API Google Custom Search">
+      <input type="text" id="cxId" placeholder="ID CX">
+      <input type="text" id="backendUrl" value="http://localhost:3001" placeholder="Backend URL">
+      <button id="saveConfig" class="btn-grad">💾 Sauvegarder</button>
+      <span id="configStatus" class="status"></span>
+    </div>
+
+    <details class="sig-box">
+      <summary>✍️ Signature email (HTML)</summary>
+      <div class="sig-grid">
+        <input type="text" id="sigName" placeholder="Nom complet">
+        <input type="text" id="sigTitle" placeholder="Fonction">
+        <input type="text" id="sigPhone" placeholder="Téléphone">
+        <input type="text" id="sigEmail" placeholder="Email">
+        <input type="text" id="sigSite" placeholder="Site web">
+      </div>
+    </details>
+  </header>
+
+  <main>
+    <section class="panel panel-scan">
+      <h2>🔍 Scanner</h2>
+      <label>Mots-clés (séparés par des virgules)</label>
+      <textarea id="keywords" rows="4">location groupe électrogène, achat groupe électrogène, réparation groupe électrogène, sécurité incendie, coffrets électriques, maintenance industrielle, pièces de rechange, coffrets inverseurs, conteneurs frigorifiques, chambres froides</textarea>
+      <div class="search-options">
+        <label>Localisation <input type="text" id="location" value="Abidjan Côte d'Ivoire"></label>
+        <label>Résultats / mot-clé <input type="number" id="maxResults" value="5" min="1" max="10"></label>
+      </div>
+      <label class="check">
+        <input type="checkbox" id="deepScan">
+        <span>🔬 Scan approfondi (visite les sites via backend)</span>
+      </label>
+      <button id="startSearch" class="btn-primary">🚀 Lancer le scan</button>
+      <div id="searchProgress" class="progress hidden"></div>
+    </section>
+
+    <section class="panel panel-list">
+      <h2>📋 Prospects <span id="countBadge">0</span></h2>
+      <div id="stats" class="stats"></div>
+      <div class="filters">
+        <input type="text" id="filterText" placeholder="🔎 Filtrer...">
+        <select id="filterStatus">
+          <option value="">Tous statuts</option>
+          <option value="nouveau">Nouveau</option>
+          <option value="contacte">Contacté</option>
+          <option value="qualifie">Qualifié</option>
+          <option value="client">Client</option>
+        </select>
+        <button id="exportCsv" class="btn-grad">📥 CSV</button>
+        <button id="clearAll" class="btn-danger">🗑️ Effacer</button>
+      </div>
+      <div class="bulk-bar">
+        <label class="check"><input type="checkbox" id="selectAll"><span>Tout sélectionner (avec email)</span></label>
+        <button id="bulkBtn" class="btn-accent" disabled>📨 Envoi groupé (0)</button>
+      </div>
+      <div id="resultsList" class="results-list"></div>
+    </section>
+  </main>
+
+  <!-- MODAL EMAIL -->
+  <div id="emailModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="emailTitle">✉️ Envoyer un email</h3>
+      <p id="emailToLabel" class="meta"></p>
+      <label>Sujet <input type="text" id="emailSubject" value="Proposition de services — Groupes électrogènes & Froid industriel"></label>
+      <label>Message <span class="hint">· variable : {{entreprise}}</span></label>
+      <textarea id="emailBody" rows="9">Bonjour,
+
+Je me permets de vous contacter concernant les activités de {{entreprise}} dans le secteur des groupes électrogènes et du froid industriel.
+
+Nous proposons :
+- Location et vente de groupes électrogènes (5 à 1500 KVA)
+- Maintenance préventive et curative
+- Pièces de rechange et coffrets inverseurs
+- Solutions de froid commercial et chambres froides
+
+Seriez-vous disponible pour un échange rapide cette semaine ?
+
+Cordialement,</textarea>
+      <label id="delayWrap" class="hidden">Délai entre deux envois (secondes, min 5)
+        <input type="number" id="emailDelay" value="20" min="5">
+      </label>
+      <p class="hint">La signature configurée en haut de page est ajoutée automatiquement.</p>
+      <div class="modal-actions">
+        <button id="sendEmailBtn" class="btn-primary">📤 Envoyer</button>
+        <button id="cancelEmailBtn">Annuler</button>
+      </div>
+      <div id="emailStatus" class="progress hidden"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>⚠️ Respectez les CGU des sites visités et la réglementation sur la prospection. Données 100% locales.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
